@@ -1,0 +1,31 @@
+<textarea{{ final_attrs|safe }} style="display:none;">{{ value }}</textarea>
+<div id="{{id}}_support">
+</div>
+<script>
+//#TODO: MOVE TO FUNCTION
+(function() {
+   var elSupportId = '{{id}}_support';
+   var elId = '{{id}}';
+   var schema = JSON.parse('{{schema|escapejs}}')
+   var startValue = JSON.parse('{{value|escapejs}}')
+   var elmSupport = document.getElementById(elSupportId);
+   var elm = document.getElementById(elId);
+
+   //#TODO: pass options in
+   var options = {
+      schema:schema,
+      theme:'bootstraptheme',
+      disable_edit_json : true,
+      display_required_only : false,
+      disable_properties : true,
+      show_errors : "always",
+      startval:typeof startValue == "object" && !isObjectEmpty(startValue)? startValue : undefined ,
+      disable_collapse : true }
+
+   var editor{{id}} = new JSONEditor(elmSupport, options);
+   editor{{id}}.on('change',function() {
+     var val = editor{{id}}.getValue();
+     elm.value = JSON.stringify(val);
+   });
+})();
+</script>
